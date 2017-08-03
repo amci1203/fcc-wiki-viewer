@@ -1,279 +1,156 @@
-$body-bg: #013311;
-$body-fg: #FFF;
-
-$sidebarW: 300px;
-$wrapperP: 25px;
-
-$btn-bg: color($body-bg b(+ 5%));
-
-@define-mixin atMedium {
-    @media (min-width: 800px) { @mixin-content }
-}
-
-
-/*********************************************************************/
+$sidebar-color: rgb(15, 50, 120);
 
 * { box-sizing: border-box }
 
 body {
-    background: $body-bg;
+    background: #EEE;
     font-family: 'Helvettica', 'Arial', sans-serif;
-    text-align: center;
-    color: $body-fg;
+    font-size: 16px;
+    color: #333;
 }
 
-.hidden { display: none !important }
+#sidebar {
+        
+    border-bottom: 1px solid #CCC;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    
+    @media (min-width: 800px) {
+        
+        position : fixed;
+        z-index  : 100;
+        top      : 0;
+        left     : 0;
+        height   : 100%;
 
-.bold { font-weight: 800 }
+        background : $sidebar-color;
+        color      : #FFF;
+        width      : 350px;
+        box-shadow : 3px 0 2px 1px rgba(10, 10, 10, 0.5);
+        
+        border: none;
+        padding: 50px 10px;
+        margin-right: 0;
+    }
 
-.wrapper {
+    #search-form {
+            
+        label {
+            display: block;
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        input {
+            width: 100%;
+            font-size: 1.35rem;
+            padding: 2px 5px;
+            margin-bottom: 25px;
+            text-align: center;
 
-    /*position: relative*/
-    max-width     : 600px;
-    margin        : 0 auto;
-    padding-left  : $wrapperP;
-    padding-right : $wrapperP;
+            @media (min-width: 800px) {
+                color: #FFF;
+                background: color($sidebar-color b(+ 15%));
+                border-radius: 15px;
+                border: none;
+                padding: 5px 10px;
+                margin-bottom: 25px;
+            }
+        }
+        
+            
+    }
+    
+    .btn.btn {
+        width: 100%;
+        color: #FFF;
+        background: color($sidebar-color b(+ 15%));
+        border-radius: 0;
+        margin: 15px 0;
+
+        @media (min-width: 800px) {
+            position: relative;
+            width: calc(100% + 20px);
+            left: -10px;
+
+            &:hover {
+                border-left: 15px solid color($sidebar-color l(+ 15%));
+                border-right: 15px solid color($sidebar-color l(+ 15%));
+            }
+        }
+    }
+    
+}
+
+#results {
+    padding: 0 10px;
+    @media (min-width: 800px) {
+        position: relative;
+        width: calc(100% - 350px - 35px);
+        left: 380px;
+    }
+    
+    & > p {
+        text-align: center;
+        color: #777;
+        font-size: 20px;
+        
+        @media (min-width: 800px) {
+            color: #555;
+        }
+    }
 }
 
 .title {
     text-align  : center;
-    font-size   : 2.65rem;
+    font-size   : 2.25rem;
     font-weight : 100;
 }
 
 .btn {
     display: inline-block;
-    background: $btn-bg;
-    color: $body-fg;
+    background: #FFF;
     border: none;
     text-align: center;
-    font-size: 2.15rem;
+    font-size: 18px;
     padding: 10px 15px;
-    margin: 80px 0;
-
+    border-radius: 5px;
+    
     text-decoration: none;
     &:active, &:hover, &:visited {
         text-decoration: none;
-        background: $body-fg;
-        color: $btn-bg;
+        color: #333;
     }
-
+    
     &:hover { cursor: pointer }
 }
 
-#play, #stop {
-
-    @media (max-width: 768px) {
-
-        position: absolute;
-        bottom: 0px;
-        left: 0;
-        width: 100%;
-        margin: 0;
-
-    }
-
+.search-results {
+    max-width : 960px;
+    margin    : 20px auto;
+    padding   : 0;
+    
+    li { list-style-type: none}
 }
 
-#player-select, #board {
-
-    transition: 0.3s all ease;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0; left: 0; bottom: 0; right: 0;
-    opacity: 0;
-    transform: scale(0.5);
-    z-index: -100;
-
-    &.active {
-        opacity: 1;
-        transform: scale(1);
-        z-index: 100;
-    }
-}
-
-#board {
-
-    #turn {
-
-        position  : relative;
-        margin    : 0 auto;
-        height    : 2rem;
-        max-width : 350px;
-        font-size : 1.4rem;
-        margin-top: 20px;
-
-        @mixin atMedium {
-            max-width: 600px;
-            font-size: 2.1rem;
-        }
-
-        #you, #your-wins, #opponent, #opponent-wins, #pointer { position: absolute; top: 0 }
-
-        #you {
-            left: 1.2rem;
-            &r-wins { left: 0 }
-        }
-
-        #opponent {
-            right: 1.2rem;
-            &-wins { right: 0 }
-        }
-
-        #pointer {
-            transition: 0.35s all ease-out;
-            display: block;
-            margin: 0;
-            padding: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 0.8rem 1.8rem 0.8rem 0;
-            border-color: transparent $body-fg transparent;
-
-            &.right {
-                transform: translateX(-50%) rotate(180deg);
-            }
-        }
-
-    }
-
-    #who {
-
-        position  : relative;
-        margin    : 0 auto;
-        height    : 3rem;
-        max-width : 250px;
-        font-size : 1.4rem;
-
-        @mixin atMedium {
-            max-width: 4fnvvfrhfhrhggh00px;
-            font-size: 2.1rem;
-        }
-
-        &-you, &-opponent { position: absolute; top: 0 }
-        &-you { left: 0 }
-        &-opponent { right: 0 }
-
-    }
-
-    table {
-
-        position: relative;
-        /*top: 80px;*/
-
-        border-collapse: collapse;
-        margin      : 0 auto;
-        font-family : monospace;
-
-        td {
-
-            font-size  : 70px;
-            height : 100px;
-            width  : 100px;
-
-            @mixin atMedium {
-                font-size  : 100px;
-                width  : 140px;
-                height : 140px;
-            }
-
-            &.winning-line { color: #EFFF22 }
-
-        }
-
-        tr:nth-child(even) td {
-            border-top: 1px solid $body-fg;
-            border-bottom: 1px solid $body-fg;
-        }
-
-        td:nth-child(even) {
-            border-left: 1px solid $body-fg;
-            border-right: 1px solid $body-fg;
-        }
-
-    }
-
-    #stop {
-        @mixin atMedium {
-            position: absolute;
-            left: 50%;
-            bottom: 25px;
-            margin: 0;
-            transform: translateX(-50%);
+.result {
+    display: block;
+    margin: 2rem 0;
+    padding: 0.5rem 1.35rem;
+    text-decoration: none !important;
+    color: #111;
+    background: #FFF;
+    border: 1px solid #FCFCFC;
+    box-shadow: 0 3px 1px 1px rgba(10, 10, 10, 0.5);
+    
+    h1 {
+        font-weight: 400;
+        font-size: 1.45rem;
+        margin-bottom: 3px;
+        border-bottom: 1px solid #DDD;
+        
+        @media (min-width: 800px) {
+            font-size: 2.15rem;
         }
     }
-}
-
-#player-select {
-
-    font-size: 18px;
-
-    ul {
-        margin: 0;
-        padding: 0;
-        padding-bottom: 20px;
-    }
-
-    li {
-        float: left;
-        display: inline-block;
-        width: 50%;
-        padding: 15px 0;
-        border: 1px solid $btn-bg;
-
-        &:first-child { border-radius: 50px 0 0 50px }
-        &:last-child  { border-radius: 0 50px 50px 0 }
-
-        &:hover { background: color($body-bg l(+ 5%)) }
-        &.selected {
-            font-weight: 600;
-            background: $body-fg;
-            color: $btn-bg
-        }
-    }
-
-    p {
-        font-size   : 1.65rem;
-        font-weight : 100;
-        clear       : both;
-    }
-
-}
-
-.modal {
-
-    position : fixed;
-    width    : 100%;
-    height   : 100%;
-    opacity  : 0;
-    z-index  : -1000;
-    top    : 0;
-    left   : 0;
-    bottom : 0;
-    right  : 0;
-    background : color(black a(0.8));
-
-    &--open {
-        opacity : 1;
-        z-index: 1000;
-    }
-
-    p {
-        font-size: 2.25rem;
-    }
-
-    .btn {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: 0 auto;
-        transform: translate(-50%, -50%) scale(1.215);
-        background: $body-fg;
-        color: #222;
-    }
-
 }
